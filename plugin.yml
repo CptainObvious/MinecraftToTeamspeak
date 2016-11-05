@@ -1,0 +1,13 @@
+main: com.obvious.McToTs
+version: 0.1
+name: MC2TS
+commands:
+    tsadd:
+        description: Ajoute un membre
+        permission: ts.add
+    tsremove:
+        description: Enlève un membre
+        permission: ts.remove
+    tsreload:
+        description: Reload le plugin
+        permission: ts.reload

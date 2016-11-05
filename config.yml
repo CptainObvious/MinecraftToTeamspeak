@@ -1,0 +1,15 @@
+query:
+    host: "localhost"
+    user: "serveradmin"
+    password: "myCHjf2e"
+    port: 10011
+bot:
+    name: "Bot PVP FACTION"
+teamspeak:
+    chanId: 1
+sql:
+    user: root
+    passwd: root
+    port: 3306
+    host: localhost
+    database: teamspeak
