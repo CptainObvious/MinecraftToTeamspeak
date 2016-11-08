@@ -26,7 +26,7 @@ public class McToTs extends JavaPlugin implements Listener{
 		loadLib();
 		plugin = this;
 		/*
-		 * Création du fichier config
+		 * CrÃ©ation du fichier config
 		 */
 		if(!new File(this.getDataFolder(), "config.yml").exists()){
 			saveDefaultConfig();
@@ -73,24 +73,21 @@ public class McToTs extends JavaPlugin implements Listener{
 	 */
 	public void loadLib(){
 		  try {
-	            final File[] libs = new File[] {
-	                    new File(getDataFolder(), "/lib/teamspeak3-api-1.0.13.jar")};
-	            for (final File lib : libs) {
-	                if (!lib.exists()) {
-	                    JarUtils.extractFromJar(lib.getName(),
-	                            lib.getAbsolutePath());
-	                }
+	            final File lib = new File(getDataFolder(), "/lib/teamspeak3-api-1.0.13.jar");
+	            if (!lib.exists()) {
+	                JarUtils.extractFromJar(lib.getName(),
+	                lib.getAbsolutePath());
 	            }
-	            for (final File lib : libs) {
-	                if (!lib.exists()) {
-	                    getLogger().warning(
+	           
+	            if (!lib.exists()) {
+	               getLogger().warning(
 	                            "Impossible de charger la librairie: "
 	                                    + lib.getName());
-	                    Bukkit.getServer().getPluginManager().disablePlugin(this);
-	                    return;
+	                Bukkit.getServer().getPluginManager().disablePlugin(this);
+	                return;
 	                }
 	                addClassPath(JarUtils.getJarUrl(lib));
-	            }
+	            
 	        } catch (final Exception e) {
 	            e.printStackTrace();
 	        }
