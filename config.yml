@@ -13,3 +13,4 @@ sql:
     port: 3306
     host: localhost
     database: teamspeak
+disable: false

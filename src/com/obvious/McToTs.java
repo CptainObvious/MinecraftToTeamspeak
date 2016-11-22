@@ -15,10 +15,12 @@ import com.obvious.Commands.AddClientCommand;
 import com.obvious.Commands.ReloadCommand;
 import com.obvious.Commands.RemoveClientCommand;
 import com.obvious.Events.OnPlayerChat;
+import com.obvious.Teamspeak.TeamspeakBot;
 import com.obvious.Utils.JarUtils;
 import com.obvious.Utils.MySQLUtil;
 
 public class McToTs extends JavaPlugin implements Listener{
+	private static boolean disabled = false;
 	private static Plugin plugin;
 
 
@@ -30,33 +32,32 @@ public class McToTs extends JavaPlugin implements Listener{
 		 */
 		if(!new File(this.getDataFolder(), "config.yml").exists()){
 			saveDefaultConfig();
-			Bukkit.getLogger().info("Plugin disable, remplir le fichier config");;
-			Bukkit.getPluginManager().disablePlugin(this);
+			disabled = true;
 			return ;
 			
-		}
-		loadLib();
+		}else{
+			getCommand("tsreload").setExecutor(new ReloadCommand());
+		    getCommand("tsadd").setExecutor(new AddClientCommand());
+		    getCommand("tsremove").setExecutor(new RemoveClientCommand());
+			loadLib();
+			disabled = getConfig().getBoolean("disable");
+
+		    
+		    /*
+		     * Connect to the database
+		     */
+		    MySQLUtil.connect();
+			Bukkit.getScheduler().runTaskAsynchronously(this, new Runnable(){
+				@Override
+				public void run(){
+					TeamspeakBot.connect(getConfig().getString("query.host"), getConfig().getString("query.user"), getConfig().getString("query.password"), getConfig().getInt("query.port"));
+				}
+				
+			});
 
 		
-		/*
-		 * Register Commands
-		 */
-	    getCommand("tsreload").setExecutor(new ReloadCommand());
-	    getCommand("tsadd").setExecutor(new AddClientCommand());
-	    getCommand("tsremove").setExecutor(new RemoveClientCommand());
-	    
-	    /*
-	     * Connect to the database
-	     */
-	    MySQLUtil.connect();
+		}
 		Bukkit.getServer().getPluginManager().registerEvents(new OnPlayerChat(), this);
-		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable(){
-			@Override
-			public void run(){
-				TeamspeakBot.connect(getConfig().getString("query.host"), getConfig().getString("query.user"), getConfig().getString("query.password"), getConfig().getInt("query.port"));
-			}
-			
-		});
 
 		
 	}
@@ -112,6 +113,14 @@ public class McToTs extends JavaPlugin implements Listener{
 	
 	public static Plugin getPlugin(){
 		return plugin;
+	}
+	
+	public static boolean isDisable(){
+		return disabled;
+	}
+	
+	public static void setDisable(boolean on){
+		disabled = on;
 	}
 
 }

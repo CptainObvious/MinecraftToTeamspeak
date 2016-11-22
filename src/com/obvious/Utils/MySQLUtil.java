@@ -46,7 +46,7 @@ public class MySQLUtil {
         	
         	pl.getLogger().log(Level.SEVERE,ChatColor.DARK_RED + "Erreur lors de la liaison MySQL : logs dans le dossier error.log du plugin");
 			savestacktrace(e1);
-            
+			McToTs.setDisable(true);
         }
 		
         try 
@@ -61,7 +61,7 @@ public class MySQLUtil {
         catch (SQLException e2) {
         	pl.getLogger().log(Level.SEVERE,ChatColor.DARK_RED + "Erreur lors de la liaison MySQL : logs dans le dossier error.log du plugin veuillez corriger les informations et redemarrer le serveur");
 			savestacktrace(e2);
-			pl.getServer().getPluginManager().disablePlugin(pl);
+			McToTs.setDisable(true);
         }
 		
 	}
