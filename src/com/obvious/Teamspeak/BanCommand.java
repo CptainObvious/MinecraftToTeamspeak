@@ -62,11 +62,11 @@ public class BanCommand {
 							Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), msg.replace("!", "").concat(" @"+e.getInvokerName()));
 						}
 					});
-					api.sendPrivateMessage(e.getInvokerId(), "Le joueur a était unban");
 					MySQLUtil.savehistory(er, e);
+					return "Le joueur a était unban";
 
 				}else{
-					api.sendPrivateMessage(e.getInvokerId(), "Vous ne pouvez pas unban de joueur");
+					return "Vous ne pouvez pas unban de joueur";
 				}
 			}
 		} catch (CommandException | SQLException e1) {
@@ -74,4 +74,68 @@ public class BanCommand {
 		}
 		return "";
 	}
+
+	public static String ipbanCmd(final String msg, final TextMessageEvent e) {
+		TS3Api api = TeamspeakBot.getApi();
+		ResultSet r = null;
+		ClientInfo er = api.getClientInfo(e.getInvokerId());
+		try {
+			r = MySQLUtil.select("SELECT ban, allperm FROM joueur WHERE databaseid = " + er.getDatabaseId());
+		} catch (SQLException e1) {
+			MySQLUtil.savestacktrace(e1);
+			return "Erreur MySQL";
+		}
+		try {
+			while(r.next()){
+				boolean ban = r.getBoolean("ban"), allperm = r.getBoolean("allperm");
+				if(ban || allperm){
+					Bukkit.getScheduler().runTask(McToTs.getPlugin(), new Runnable(){
+						public void run(){
+							Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), msg.replace("!", "").concat(" @"+e.getInvokerName()));
+						}
+					});
+					MySQLUtil.savehistory(er, e);
+					return "Le joueur a était banip";
+				}else{
+					return "Vous ne pouvez pas banip ce joueur";
+				}
+			}
+		} catch (CommandException | SQLException e1) {
+			MySQLUtil.savestacktrace(e1);
+		}
+		return "";
+	
+	}
+	
+	public static String tempipbanCmd(final String msg, final TextMessageEvent e){
+		TS3Api api = TeamspeakBot.getApi();
+		ResultSet r = null;
+		ClientInfo er = api.getClientInfo(e.getInvokerId());
+		try {
+			r = MySQLUtil.select("SELECT ban, allperm FROM joueur WHERE databaseid = " + er.getDatabaseId());
+		} catch (SQLException e1) {
+			MySQLUtil.savestacktrace(e1);
+			return "Erreur MySQL";
+		}
+		try {
+			while(r.next()){
+				boolean ban = r.getBoolean("ban"), allperm = r.getBoolean("allperm");
+				if(ban || allperm){
+					Bukkit.getScheduler().runTask(McToTs.getPlugin(), new Runnable(){
+						public void run(){
+							Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), msg.replace("!", "").concat(" @"+e.getInvokerName()));
+						}
+					});
+					MySQLUtil.savehistory(er, e);
+					return "Le joueur a était unban";
+				}else{
+					return "Vous ne pouvez pas tempipban ce joueur";
+				}
+			}
+		} catch (CommandException | SQLException e1) {
+			MySQLUtil.savestacktrace(e1);
+		}
+		return "";
+	}
+	
 }

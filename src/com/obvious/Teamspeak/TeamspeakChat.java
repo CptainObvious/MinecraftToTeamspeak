@@ -40,6 +40,8 @@ public class TeamspeakChat {
 					 */
 					else if (msg.startsWith("!ban")) api.sendPrivateMessage(e.getInvokerId(), BanCommand.banCmd(msg, e));
 					else if (msg.startsWith("!unban")) api.sendPrivateMessage(e.getInvokerId(), BanCommand.unbanCmd(msg, e));
+					else if (msg.startsWith("!ipban")) api.sendPrivateMessage(e.getInvokerId(), BanCommand.ipbanCmd(msg, e));
+					else if (msg.startsWith("tempipban")) api.sendPrivateMessage(e.getInvokerId(), BanCommand.tempipbanCmd(msg, e));
 	
 					
 					/*
@@ -78,7 +80,12 @@ public class TeamspeakChat {
 					/*
 					 * History
 					 */
-					else if(msg.startsWith("!history")) HistoryCommand.historyCmd(msg, e);																
+					else if(msg.startsWith("!history")) Bukkit.getScheduler().runTaskAsynchronously(McToTs.getPlugin(), new Runnable(){
+							public void run(){
+								HistoryCommand.historyCmd(msg, e);
+							}
+						});																
+					
 					/*
 					 * Toute commande pour perm allperm
 					 */
