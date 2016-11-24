@@ -39,6 +39,7 @@ public class TeamspeakChat {
 					 * Ban/Unban
 					 */
 					else if (msg.startsWith("!ban")) api.sendPrivateMessage(e.getInvokerId(), BanCommand.banCmd(msg, e));
+					else if (msg.startsWith("!tempban")) api.sendPrivateMessage(e.getInvokerId(), BanCommand.tempbanCmd(msg, e));
 					else if (msg.startsWith("!unban")) api.sendPrivateMessage(e.getInvokerId(), BanCommand.unbanCmd(msg, e));
 					else if (msg.startsWith("!ipban")) api.sendPrivateMessage(e.getInvokerId(), BanCommand.ipbanCmd(msg, e));
 					else if (msg.startsWith("tempipban")) api.sendPrivateMessage(e.getInvokerId(), BanCommand.tempipbanCmd(msg, e));

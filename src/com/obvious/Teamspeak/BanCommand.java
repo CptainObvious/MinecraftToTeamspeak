@@ -43,6 +43,34 @@ public class BanCommand {
 
 	}
 	
+	public static String tempbanCmd(final String msg, TextMessageEvent e){
+		TS3Api api = TeamspeakBot.getApi();
+		ResultSet r = null;
+		ClientInfo er = api.getClientInfo(e.getInvokerId());
+		try {
+			r = MySQLUtil.select("SELECT ban, allperm FROM joueur WHERE databaseid = '" + er.getDatabaseId()+"'");
+		} catch (SQLException e1) {
+			MySQLUtil.savestacktrace(e1);
+			return "Erreur MySQL";
+		}
+		try {
+			while(r.next()){
+				boolean ban = r.getBoolean("ban"), allperm = r.getBoolean("allperm");
+				if(ban || allperm){
+					Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), msg.replace("!", "").concat(" @"+e.getInvokerName()));
+					MySQLUtil.savehistory(er, e);
+					return "Le joueur a était ban";
+
+				}else{
+					return "Vous ne pouvez pas ban de joueur";
+				}
+			}
+		} catch (CommandException | SQLException e1) {
+			MySQLUtil.savestacktrace(e1);
+		}
+		return "";
+	}
+	
 	public static String unbanCmd(final String msg, final TextMessageEvent e){
 		TS3Api api = TeamspeakBot.getApi();
 		ResultSet r = null;

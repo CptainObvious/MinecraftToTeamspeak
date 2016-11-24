@@ -21,6 +21,12 @@ public class TeamspeakBot {
 		config.setQueryPort(port);
 		
 		query = new TS3Query(config);
+		if(query == null){
+			McToTs.setDisable(true);
+			System.out.println("Erreur lors de la connexion Query");
+			return;
+		}
+			
 		
 		query.connect();
 		
@@ -29,7 +35,6 @@ public class TeamspeakBot {
 		api.selectVirtualServerById(1);
 		api.setNickname(McToTs.getPlugin().getConfig().getString("bot.name"));
 		api.moveQuery(McToTs.getPlugin().getConfig().getInt("teamspeak.chanId"));
-		
 		api.registerAllEvents();
 		TeamspeakChat.registerChat();
 		
