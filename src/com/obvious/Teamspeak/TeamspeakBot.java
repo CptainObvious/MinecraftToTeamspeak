@@ -20,16 +20,7 @@ public class TeamspeakBot {
 		config.setDebugToFile(false);
 		config.setQueryPort(port);
 		
-		query = new TS3Query(config);
-		if(query == null){
-			McToTs.setDisable(true);
-			System.out.println("Erreur lors de la connexion Query");
-			return;
-		}
-			
-		
-		query.connect();
-		
+		query = new TS3Query(config);		
 		api = query.getApi();
 		api.login(user, pwd);
 		api.selectVirtualServerById(1);

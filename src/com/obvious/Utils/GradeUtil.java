@@ -16,9 +16,9 @@ public class GradeUtil {
 		case "&3[&b&lLegendaire&3] &3":
 			return "[color=#008080][[/color][color=aqua][B]Legendaire[/B][/color][color=#008080]] "+nom+" [/color]";
 		case "&6&l&n[Ultime]&r &3&l":
-			return "[B][U][color=#ADD8E6][Ultime][/color][/U][color=#008080] "+nom+" [/B][/color]";
+			return "[B][U][color=#ADD8E6][Ultime][/color][/U][color=#008080] "+nom+" [/color][/B]";
 		case "&c&l[MDC] &b&l":
-			return "[color=red][B][MDC] [/B][/color][color=aqua][B] "+nom+"[/B][/color]";
+			return "[color=red][B][MDC][/B][/color][color=aqua][B] "+nom+"[/B][/color]";
 		case "&1[Modo] &c&l":
 			return "[color=darkblue][Modo][/color][color=red][B] "+nom+"[/B]";
 		case "&1[Moderateur]&d":

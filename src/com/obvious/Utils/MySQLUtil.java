@@ -52,7 +52,7 @@ public class MySQLUtil {
         try 
         
         {
-        	 url = "jdbc:mysql://"+pl.getConfig().getString("sql.host") + ":" + pl.getConfig().getInt("sql.port") + "/" + pl.getConfig().getString("sql.database");
+        	 url = "jdbc:mysql://"+pl.getConfig().getString("sql.host") + ":" + pl.getConfig().getInt("sql.port") + "/" + pl.getConfig().getString("sql.database")+"?autoReconnect=true";
             conn = DriverManager.getConnection(url, pl.getConfig().getString("sql.user"), pl.getConfig().getString("sql.passwd"));
             verify();
 
@@ -204,12 +204,14 @@ public class MySQLUtil {
 	}
 
 	public static void execute(String request) throws SQLException{
+		checkConn();
 		Statement state = conn.createStatement();
 		state.execute(request);
 		state.close();
 	}
 	
 	public static  void update(String request) throws SQLException{
+		checkConn();
 		Statement state = conn.createStatement();
 		state.executeUpdate(request);
 		state.close();
@@ -217,13 +219,14 @@ public class MySQLUtil {
 	}
 	
 	public static void delete(String request) throws SQLException{
+		checkConn();
 		Statement state = conn.createStatement();
 		state.execute(request);
 		state.close();
-		
 	}
 	
 	public static ResultSet select(String request) throws SQLException{
+		checkConn();
 		ResultSet result;
 		Statement state = conn.createStatement();
 		result = state.executeQuery(request);
@@ -231,7 +234,23 @@ public class MySQLUtil {
 	}
 
 	
+	private static void checkConn() {
+		try{
+			Statement state = conn.createStatement();
+			state.executeQuery("SELECT 1");
+		}catch(SQLException e){
+			String url = "jdbc:mysql://"+pl.getConfig().getString("sql.host") + ":" + pl.getConfig().getInt("sql.port") + "/" + pl.getConfig().getString("sql.database")+"?autoReconnect=true";
+            try {
+				conn = DriverManager.getConnection(url, pl.getConfig().getString("sql.user"), pl.getConfig().getString("sql.passwd"));
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+	}
+
 	public static void savehistory(ClientInfo c, TextMessageEvent e) throws SQLException{
+		checkConn();
 		DateFormat date = new SimpleDateFormat("yyy/MM/dd HH:mm:ss");
 		Date dat = new Date();
 		MySQLUtil.execute("INSERT INTO historique(databaseid, pseudo, datecmd, commande) "

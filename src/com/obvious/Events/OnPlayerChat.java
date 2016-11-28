@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.maxgamer.maxbans.MaxBans;
 
 import com.massivecraft.factions.entity.MPlayer;
 import com.obvious.McToTs;
@@ -24,7 +25,9 @@ public class OnPlayerChat implements Listener {
 			mplayer = MPlayer.get(p);
 			final String faction = mplayer.getFactionName();
 			final PermissionUser user = PermissionsEx.getUser(p);
+			
 			if(!FactionChatAPI.isFactionChatMessage(e)){
+				if(MaxBans.instance.getBanManager().getMute(p.getName()) != null) return;
 				Bukkit.getScheduler().runTaskAsynchronously(McToTs.getPlugin(), new Runnable(){
 					
 					public void run(){
